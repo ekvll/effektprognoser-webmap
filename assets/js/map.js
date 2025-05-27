@@ -1,4 +1,4 @@
-import { loadDataLayer } from "./layers.js";
+import { loadDataLayer, loadKommunGranser, loadNatagareGranser } from "./layers.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
@@ -80,6 +80,9 @@ function eventsToolBox() {
 			selectedGranser.natagare = document.getElementById('natagare').checked;
 
 			console.log(selectedGranser);
+
+			loadKommunGranser();
+			loadNatagareGranser();
 		});
 	});
 }
@@ -97,4 +100,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export map and selectedValues
 // This allows other modules to access the map instance and the selected values
-export { map, selectedValues };
+export { map, selectedValues, selectedGranser };
