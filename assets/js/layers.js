@@ -1,9 +1,26 @@
-import { map, selectedValues, selectedGranser } from "./map.js";
+import { map, selectedValues, selectedGranser, tileLayer } from "./map.js";
 import { getStyleFunction } from "./styles.js";
 
 let currentLayer;
 let currentKommunGranser;
 let currentNatagareGranser;
+
+function adjustLayersOnZoom() {
+	// This function adjusts the visibility of the granser layers based on the current zoom level
+	
+	zoomThresholds = {"1": 8, "2": 10};
+	map.on("zoomend", () => {
+		const zoomLevel = map.getZoom();
+
+		if (zoomLevel < zoomThresholds["2"]) {
+			if (!map.hasLayer(tileLayer)) {
+				tileLayer.addTo(map);
+				console.log("Tile layer added");
+			}
+		}
+	}
+}
+		
 
 
 export async function loadNatagareGranser() {

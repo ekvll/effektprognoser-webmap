@@ -2,6 +2,7 @@ import { loadDataLayer, loadKommunGranser, loadNatagareGranser } from "./layers.
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
+let tileLayer;
 let selectedValues = {
 	prognos: null,
 	year: null,
@@ -38,9 +39,10 @@ function initializeMap() {
 		position: "topright",
 	}).addTo(map);
 
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: '© OpenStreetMap contributors'
-	}).addTo(map);
+	});
+
 }
 
 function eventsToolBox() {
@@ -73,6 +75,7 @@ function eventsToolBox() {
 		});
 	});
 
+	// Listen for changes on the checkboxes for granser
 	document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
 		cb.addEventListener('change', () => {
 
@@ -100,4 +103,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export map and selectedValues
 // This allows other modules to access the map instance and the selected values
-export { map, selectedValues, selectedGranser };
+export { map, selectedValues, selectedGranser, tileLayer };
