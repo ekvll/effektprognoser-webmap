@@ -1,93 +1,104 @@
-import { loadDataLayer, loadKommunGranser, loadNatagareGranser } from "./layers.js";
+import {
+  loadDataLayer,
+  loadKommunGranser,
+  loadNatagareGranser,
+  adjustLayersOnZoom,
+} from "./layers.js";
+
+import { mapConfig } from "./config.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
-let tileLayer;
+// let tileLayer;
 let selectedValues = {
-	prognos: null,
-	year: null,
-	region: null,
-	raps: null,
+  prognos: null,
+  year: null,
+  region: null,
+  raps: null,
 };
 let selectedGranser = {
-	kommun: null,
-	natagare: null,
-}
+  kommun: null,
+  natagare: null,
+};
 
 function initializeMap() {
-	// Initialize the map with specific options
-	// This function sets the initial view, zoom level, and tile layer
-	// It also sets the maximum bounds for the map
-	// The map is centered on a specific location with a defined zoom level
-	// The zoom control is added to the top right corner of the map
-	// The OpenStreetMap tile layer is added to the map with attribution
-	// The map is set to have a minimum zoom level of 8 and a maximum zoom level of 16
-	// The map is initialized with a center point and zoom level
-	// The map is set to have a maximum bounds to restrict the viewable area
-	
-	map = L.map("map", {
-		center: [56.7591, 13.855],
-		zoom: 8,
-		zoomControl: true,
-		minZoom: 8,
-		maxZoom: 16,
-	});
+  // Initialize the map with specific options
+  // This function sets the initial view, zoom level, and tile layer
+  // It also sets the maximum bounds for the map
+  // The map is centered on a specific location with a defined zoom level
+  // The zoom control is added to the top right corner of the map
+  // The OpenStreetMap tile layer is added to the map with attribution
+  // The map is set to have a minimum zoom level of 8 and a maximum zoom level of 16
+  // The map is initialized with a center point and zoom level
+  // The map is set to have a maximum bounds to restrict the viewable area
 
-	map.setMaxBounds([[53, 9], [61, 20]]);
+  map = L.map("map", mapConfig.mapOptions);
 
-	L.control.zoom({
-		position: "topright",
-	}).addTo(map);
+  map.setMaxBounds(mapConfig.maxBounds);
 
-	tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '© OpenStreetMap contributors'
-	});
+  L.control
+    .zoom({
+      position: "topright",
+    })
+    .addTo(map);
 
+  // tileLayer = L.tileLayer(
+  //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  //   {
+  //     attribution: "© OpenStreetMap contributors",
+  //   },
+  // );
 }
 
 function eventsToolBox() {
-	// This function sets up event listeners for the radio buttons in the toolbox
-	// It listens for changes on all radio buttons and updates the selected values in the `selectedValues` object
-	// When a radio button is changed, it logs the updated values and calls the `loadDataLayer` function to refresh the data layer on the map
-	// The `selectedValues` object holds the currently selected values for prognos, year, region, and raps
-	// The event listeners are added to all radio buttons with the type "radio" in the document
-	// The `loadDataLayer` function is called to update the map with the new selections
-	// The selected values are logged to the console for debugging purposes
+  // This function sets up event listeners for the radio buttons in the toolbox
+  // It listens for changes on all radio buttons and updates the selected values in the `selectedValues` object
+  // When a radio button is changed, it logs the updated values and calls the `loadDataLayer` function to refresh the data layer on the map
+  // The `selectedValues` object holds the currently selected values for prognos, year, region, and raps
+  // The event listeners are added to all radio buttons with the type "radio" in the document
+  // The `loadDataLayer` function is called to update the map with the new selections
+  // The selected values are logged to the console for debugging purposes
 
-	// Listen for changes on all radio buttons
-	document.querySelectorAll('input[type="radio"]').forEach(item => {
-		item.addEventListener('change', () => {
-		
-			// Update the selected values in the object
-			selectedValues.prognos = document.querySelector('input[name="prognos"]:checked')?.value;
-			
-			selectedValues.year = document.querySelector('input[name="year"]:checked')?.value;
-			
-			selectedValues.region = document.querySelector('input[name="region"]:checked')?.value;
-			
-			selectedValues.raps = document.querySelector('input[name="raps"]:checked')?.value;
-		
-			// Log the updated values
-			console.log(selectedValues);
+  // Listen for changes on all radio buttons
+  document.querySelectorAll('input[type="radio"]').forEach((item) => {
+    item.addEventListener("change", () => {
+      // Update the selected values in the object
+      selectedValues.prognos = document.querySelector(
+        'input[name="prognos"]:checked',
+      )?.value;
 
-			// Call the function to load the data layer
-			loadDataLayer();
-		});
-	});
+      selectedValues.year = document.querySelector(
+        'input[name="year"]:checked',
+      )?.value;
 
-	// Listen for changes on the checkboxes for granser
-	document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-		cb.addEventListener('change', () => {
+      selectedValues.region = document.querySelector(
+        'input[name="region"]:checked',
+      )?.value;
 
-			selectedGranser.kommun = document.getElementById('kommungranser').checked;
-			selectedGranser.natagare = document.getElementById('natagare').checked;
+      selectedValues.raps = document.querySelector(
+        'input[name="raps"]:checked',
+      )?.value;
 
-			console.log(selectedGranser);
+      // Log the updated values
+      console.log(selectedValues);
 
-			loadKommunGranser();
-			loadNatagareGranser();
-		});
-	});
+      // Call the function to load the data layer
+      loadDataLayer();
+    });
+  });
+
+  // Listen for changes on the checkboxes for granser
+  document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    cb.addEventListener("change", () => {
+      selectedGranser.kommun = document.getElementById("kommungranser").checked;
+      selectedGranser.natagare = document.getElementById("natagare").checked;
+
+      console.log(selectedGranser);
+
+      loadKommunGranser();
+      loadNatagareGranser();
+    });
+  });
 }
 
 // Initialize the map and events when the page loads
@@ -96,11 +107,12 @@ function eventsToolBox() {
 // The `DOMContentLoaded` event ensures that the map is initialized only after the HTML is fully parsed
 // The `initializeMap` function is called to set up the map
 // The `eventsToolBox` function is called to set up the event listeners for the toolbox
-document.addEventListener('DOMContentLoaded', () => {
-	initializeMap();
-	eventsToolBox();
+document.addEventListener("DOMContentLoaded", () => {
+  initializeMap();
+  eventsToolBox();
+  adjustLayersOnZoom();
 });
 
 // Export map and selectedValues
 // This allows other modules to access the map instance and the selected values
-export { map, selectedValues, selectedGranser, tileLayer };
+export { map, selectedValues, selectedGranser };
