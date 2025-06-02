@@ -1,10 +1,9 @@
+import { adjustBackgroundLayersOnZoom } from "./layers.js";
 import {
   loadDataLayer,
   loadKommunGranser,
   loadNatagareGranser,
-  adjustLayersOnZoom,
-} from "./layers.js";
-
+} from "./loader.js";
 import { mapConfig } from "./config.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
@@ -41,13 +40,24 @@ function initializeMap() {
       position: "topright",
     })
     .addTo(map);
+}
 
-  // tileLayer = L.tileLayer(
-  //   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  //   {
-  //     attribution: "© OpenStreetMap contributors",
-  //   },
-  // );
+function updateSelectedDataLayer() {
+  selectedValues.prognos = document.querySelector(
+    'input[name="prognos"]:checked',
+  )?.value;
+  selectedValues.year = document.querySelector(
+    'input[name="year"]:checked',
+  )?.value;
+  selectedValues.region = document.querySelector(
+    'input[name="region"]:checked',
+  )?.value;
+  selectedValues.raps = document.querySelector(
+    'input[name="raps"]:checked',
+  )?.value;
+
+  console.log("Updated selected values:", selectedValues);
+  loadDataLayer();
 }
 
 function eventsToolBox() {
@@ -61,30 +71,7 @@ function eventsToolBox() {
 
   // Listen for changes on all radio buttons
   document.querySelectorAll('input[type="radio"]').forEach((item) => {
-    item.addEventListener("change", () => {
-      // Update the selected values in the object
-      selectedValues.prognos = document.querySelector(
-        'input[name="prognos"]:checked',
-      )?.value;
-
-      selectedValues.year = document.querySelector(
-        'input[name="year"]:checked',
-      )?.value;
-
-      selectedValues.region = document.querySelector(
-        'input[name="region"]:checked',
-      )?.value;
-
-      selectedValues.raps = document.querySelector(
-        'input[name="raps"]:checked',
-      )?.value;
-
-      // Log the updated values
-      console.log(selectedValues);
-
-      // Call the function to load the data layer
-      loadDataLayer();
-    });
+    item.addEventListener("change", updateSelectedDataLayer);
   });
 
   // Listen for changes on the checkboxes for granser
@@ -110,7 +97,8 @@ function eventsToolBox() {
 document.addEventListener("DOMContentLoaded", () => {
   initializeMap();
   eventsToolBox();
-  adjustLayersOnZoom();
+  updateSelectedDataLayer();
+  adjustBackgroundLayersOnZoom();
 });
 
 // Export map and selectedValues
