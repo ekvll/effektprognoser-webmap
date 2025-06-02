@@ -1,9 +1,6 @@
 import { adjustBackgroundLayersOnZoom } from "./layers.js";
-import {
-  loadDataLayer,
-  loadKommunGranser,
-  loadNatagareGranser,
-} from "./loader.js";
+import { loadDataLayer } from "./loader.js";
+import { loadNatagareGranser, loadKommunGranser } from "./load_granser.js";
 import { mapConfig } from "./config.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.

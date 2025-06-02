@@ -1,122 +1,16 @@
-import { map, selectedValues, selectedGranser } from "./map.js";
+import { map, selectedValues } from "./map.js";
 import { getStyleFunction } from "./styles.js";
+import { bringLayerToFrontWithTimer } from "./utils.js";
 
 const layerCache = {};
 let currentLayer;
 let danmarkLayer;
 let tileLayer;
-let currentKommunGranser;
-let currentNatagareGranser;
 let citiesLayer;
 let lakesLayer;
 let roadsLayer;
 let roadsLayerBoundary;
 let canvasRenderer = L.canvas();
-
-// Function to bring a layer to the front with a timer
-function bringLayerToFrontWithTimer(layer, intervalDuration, totalDuration) {
-  // Calculate the total number of intervals
-  let intervals = totalDuration / intervalDuration;
-
-  // Initialize the interval
-  const timer = setInterval(() => {
-    // Bring the specified layer to the back
-    layer.bringToFront();
-
-    // Decrement the interval count
-    if (--intervals <= 0) {
-      clearInterval(timer); // Clear the interval after the total duration
-    }
-  }, intervalDuration);
-}
-
-export function loadNatagareGranser() {
-  // This function loads the natagare granser layer onto the Leaflet map based on the selected values
-  // It checks if the layer has already been created, and if not, it creates a new layer using the GeoJSON data
-  // It styles the layer with a specific color, weight, and opacity
-  const dataPath = `assets/data/background/Natomraden_ll84_dissolved.geojson`;
-  console.log(dataPath);
-
-  // If the layer hasn't been created yet, load it first
-  if (!currentNatagareGranser) {
-    currentNatagareGranser = new L.GeoJSON.AJAX(dataPath, {
-      style: function () {
-        return {
-          color: "#000",
-          weight: 1,
-          opacity: 0.5,
-          fillOpacity: 0,
-          fillColor: "#000",
-          dashArray: "5, 5",
-          dashOffset: "0",
-        };
-      },
-    });
-
-    // Only add layer to map if it's supposed to be visible
-    if (selectedGranser.natagare) {
-      currentNatagareGranser.addTo(map);
-      console.log("Natagare granser layer added");
-    }
-  } else {
-    // Toggle visibility
-    if (selectedGranser.natagare) {
-      if (!map.hasLayer(currentNatagareGranser)) {
-        currentNatagareGranser.addTo(map);
-        console.log("Natagare granser layer shown");
-      }
-    } else {
-      if (map.hasLayer(currentNatagareGranser)) {
-        map.removeLayer(currentNatagareGranser);
-        console.log("Natagare granser layer hidden");
-      }
-    }
-  }
-}
-
-export function loadKommunGranser() {
-  // This function loads the kommun granser layer onto the Leaflet map based on the selected values
-  // It checks if the layer has already been created, and if not, it creates a new layer using the GeoJSON data
-  // It styles the layer with a specific color, weight, and opacity
-  const dataPath = `assets/data/background/kommungranser_rss_skane_dissolved.geojson`;
-  console.log(dataPath);
-
-  // If the layer hasn't been created yet, load it first
-  if (!currentKommunGranser) {
-    currentKommunGranser = new L.GeoJSON.AJAX(dataPath, {
-      style: function () {
-        return {
-          color: "#000",
-          weight: 1,
-          opacity: 0.5,
-          fillOpacity: 0,
-          fillColor: "#000",
-          dashArray: "5, 5",
-          dashOffset: "0",
-        };
-      },
-    });
-
-    // Only add layer to map if it's supposed to be visible
-    if (selectedGranser.kommun) {
-      currentKommunGranser.addTo(map);
-      console.log("Kommun granser layer added");
-    }
-  } else {
-    // Toggle visibility
-    if (selectedGranser.kommun) {
-      if (!map.hasLayer(currentKommunGranser)) {
-        currentKommunGranser.addTo(map);
-        console.log("Kommun granser layer shown");
-      }
-    } else {
-      if (map.hasLayer(currentKommunGranser)) {
-        map.removeLayer(currentKommunGranser);
-        console.log("Kommun granser layer hidden");
-      }
-    }
-  }
-}
 
 export function loadDataLayer() {
   // This function loads a GeoJSON data layer onto the Leaflet map based on the selected values
@@ -175,8 +69,8 @@ export function loadRoadsBoundary() {
   const cacheKey = "roads_boundary";
 
   if (layerCache[cacheKey]) {
-    map.addLayer(layerCache[cacheKey]);
-    layerCache[cacheKey].bringToFront();
+    roadsLayerBoundary = layerCache[cacheKey];
+    map.addLayer(roadsLayerBoundary);
     console.log("Cached roads boundary layer added");
   } else {
     roadsLayerBoundary = new L.GeoJSON.AJAX(dataPath, {
@@ -196,13 +90,17 @@ export function loadRoadsBoundary() {
     console.log("Roads boundary layer added");
     layerCache[cacheKey] = roadsLayerBoundary;
   }
+  if (map.hasLayer(roadsLayerBoundary)) {
+    bringLayerToFrontWithTimer(roadsLayerBoundary, 1000, 3000);
+  }
 }
 
 export function loadRoads() {
   const dataPath = `assets/data/background/vagar_2.geojson`;
 
   if (layerCache[dataPath]) {
-    map.addLayer(layerCache[dataPath]);
+    roadsLayer = layerCache[dataPath];
+    map.addLayer(roadsLayer);
     console.log("Cached roads layer added");
   } else {
     roadsLayer = new L.GeoJSON.AJAX(dataPath, {
@@ -222,16 +120,20 @@ export function loadRoads() {
     console.log("Roads layer added");
     layerCache[dataPath] = roadsLayer;
   }
+  if (map.hasLayer(roadsLayer)) {
+    bringLayerToFrontWithTimer(roadsLayer, 1000, 3000);
+  }
 }
 
 export function loadLakes() {
   const dataPath = `assets/data/background/sjoar_1.geojson`;
   if (layerCache[dataPath]) {
-    map.addLayer(layerCache[dataPath]);
+    lakesLayer = layerCache[dataPath];
+    map.addLayer(lakesLayer);
     console.log("Cached lakes layer added");
   } else {
     lakesLayer = new L.GeoJSON.AJAX("assets/data/background/sjoar_1.geojson", {
-      // renderer: canvasRenderer,  // Render with canvas, instead of SVG
+      // renderer: canvasRenderer, // Render with canvas, instead of SVG
       style: {
         // Add styling
         color: "#d1caab",
@@ -244,6 +146,9 @@ export function loadLakes() {
     lakesLayer.addTo(map);
     console.log("Lakes layer added");
     layerCache[dataPath] = lakesLayer;
+  }
+  if (map.hasLayer(lakesLayer)) {
+    bringLayerToFrontWithTimer(lakesLayer, 1000, 3000);
   }
 }
 
@@ -333,8 +238,6 @@ export {
   currentLayer,
   danmarkLayer,
   tileLayer,
-  currentKommunGranser,
-  currentNatagareGranser,
   citiesLayer,
   lakesLayer,
   roadsLayer,
