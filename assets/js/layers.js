@@ -4,6 +4,7 @@ import { zoomThresholds } from "./config.js";
 
 const layerCache = {};
 let currentLayer;
+let danmarkLayer;
 let tileLayer;
 let currentKommunGranser;
 let currentNatagareGranser;
@@ -156,6 +157,26 @@ function loadTileLayer() {
   }
 }
 
+function loadDanmark() {
+  const dataPath = `assets/data/background/land_2_danmark.geojson`;
+  if (layerCache[dataPath]) {
+    map.addLayer(layerCache[dataPath]);
+  } else {
+    danmarkLayer = new L.GeoJSON.AJAX(dataPath, {
+      renderer: canvasRenderer,
+      style: {
+        color: "#d1caab",
+        weight: 0.5,
+        opacity: 1.0,
+        fillColor: "#f7f3df",
+        fillOpacity: 1.0,
+      },
+    });
+    danmarkLayer.addTo(map);
+    layerCache[dataPath] = danmarkLayer;
+  }
+}
+
 function loadCities() {
   // Function to load the city name labels layer
   const dataPath = `assets/data/background/city_1.geojson`;
@@ -219,6 +240,7 @@ export function adjustLayersOnZoom() {
     addRemoveLayer(zoomLevel, tileLayer, loadTileLayer, 2, 0);
     addRemoveLayer(zoomLevel, citiesLayer, loadCities, 2, 1);
     addRemoveLayer(zoomLevel, lakesLayer, loadLakes, 2, 1);
+    addRemoveLayer(zoomLevel, danmarkLayer, loadDanmark, 2, 1);
     handleZoomLayers(zoomLevel, roadsLayerBoundary, loadRoadsBoundary, 2, 1);
     handleZoomLayers(zoomLevel, roadsLayer, loadRoads, 2, 1);
 
