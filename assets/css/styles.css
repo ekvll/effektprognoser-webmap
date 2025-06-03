@@ -90,6 +90,16 @@ label {
   font-size: 12px;
 }
 
+.legend {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
 .legend h4 {
   margin: 0 0 5px;
   font-size: 12px;

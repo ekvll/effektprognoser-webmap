@@ -1,5 +1,4 @@
-import { map, selectedValues, selectedGranser } from "./map.js";
-import { getStyleFunction } from "./styles.js";
+import { map, selectedValues } from "./map.js";
 import { zoomThresholds } from "./config.js";
 import {
   loadTileLayer,
@@ -16,34 +15,6 @@ import {
   roadsLayer,
   lakesLayer,
 } from "./loader.js";
-
-function addRemoveLayerPromise(zoomLevel, layer, addFunc, th, reverse) {
-  return new Promise((resolve) => {
-    if (reverse === 0) {
-      if (zoomLevel >= zoomThresholds[th]) {
-        if (!map.hasLayer(layer)) {
-          addFunc(); // This should call layer.addTo(map)
-        }
-        resolve(); // Already added
-      } else if (map.hasLayer(layer)) {
-        map.removeLayer(layer);
-        resolve(); // Resolves even after removal
-      }
-    } else if (reverse === 1) {
-      if (zoomLevel < zoomThresholds[th]) {
-        if (!map.hasLayer(layer)) {
-          addFunc(); // This should call layer.addTo(map)
-        }
-        resolve(); // Already added
-      } else if (map.hasLayer(layer)) {
-        map.removeLayer(layer);
-        resolve(); // Resolves even after removal
-      }
-    } else {
-      resolve(); // Nothing to do
-    }
-  });
-}
 
 function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
   if (reverse === 0) {
@@ -67,10 +38,6 @@ function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
       }
     }
   }
-}
-
-async function handleZoomLayers(zoomLevel, layer, func, th, reverse) {
-  await addRemoveLayerPromise(zoomLevel, layer, func, th, reverse);
 }
 
 function onZoomEnd() {

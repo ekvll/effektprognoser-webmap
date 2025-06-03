@@ -2,10 +2,10 @@ import { adjustBackgroundLayersOnZoom } from "./layers.js";
 import { loadDataLayer } from "./loader.js";
 import { loadNatagareGranser, loadKommunGranser } from "./load_granser.js";
 import { mapConfig } from "./config.js";
+import { createLegend, updateLegend } from "./legend.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
-// let tileLayer;
 let selectedValues = {
   prognos: null,
   year: null,
@@ -16,6 +16,7 @@ let selectedGranser = {
   kommun: null,
   natagare: null,
 };
+let legendControl = null;
 
 function initializeMap() {
   // Initialize the map with specific options
@@ -37,6 +38,9 @@ function initializeMap() {
       position: "topright",
     })
     .addTo(map);
+
+  // const legendControl = createLegend();
+  // legendControl.addTo(map);
 }
 
 function updateSelectedDataLayer() {
@@ -55,6 +59,13 @@ function updateSelectedDataLayer() {
 
   console.log("Updated selected values:", selectedValues);
   loadDataLayer();
+
+  if (legendControl) {
+    legendControl.remove();
+  }
+
+  legendControl = updateLegend();
+  legendControl.addTo(map);
 }
 
 function eventsToolBox() {
@@ -98,6 +109,4 @@ document.addEventListener("DOMContentLoaded", () => {
   adjustBackgroundLayersOnZoom();
 });
 
-// Export map and selectedValues
-// This allows other modules to access the map instance and the selected values
 export { map, selectedValues, selectedGranser };
