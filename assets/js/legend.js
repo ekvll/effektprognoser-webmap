@@ -39,7 +39,7 @@ export function updateLegend() {
       div.innerHTML = "Tillkommande<br>effektbehov (MW)";
     } else if (selectedValues.prognos === "ebp") {
       div.innerHTML = "Tillkommande<br>effektbehov (%)";
-    } else if (selectedValues.prognos === "elanvandning") {
+    } else if (selectedValues.prognos === "ead") {
       div.innerHTML = "Tillkommande<br>elanvändning (MWh)";
     } else if (selectedValues.prognos === "eap") {
       div.innerHTML = "Tillkommande<br>elanvändning (%)";

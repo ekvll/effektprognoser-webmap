@@ -69,34 +69,58 @@ export function getBoundariesAndColors() {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 7, max: 10e6 - 1 },
-          { min: 1, max: 7 },
-          { min: 0, max: 1 },
+          { min: 2.5, max: 10e6 - 1 },
+          { min: 0.8, max: 2.5 },
+          { min: 0.2, max: 0.8 },
+          { min: 0, max: 0.2 },
           { min: -Infinity, max: 0 },
         ],
-        colors: ["url(#hatch1)", "#060807", "#163019", "#296633", "#599E66"],
+        colors: [
+          "url(#hatch1)",
+          "#060807",
+          "#163019",
+          "#296633",
+          "#599E66",
+          "transparent",
+        ],
       };
     } else if (selectedValues.raps == "bostader") {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 7, max: 10e6 - 1 },
-          { min: 1, max: 7 },
-          { min: 0, max: 1 },
+          { min: 2.5, max: 10e6 - 1 },
+          { min: 0.8, max: 2.5 },
+          { min: 0.2, max: 0.8 },
+          { min: 0, max: 0.2 },
           { min: -Infinity, max: 0 },
         ],
-        colors: ["url(#hatch1)", "#3E2C13", "#C46737", "#EFA327", "#FEE292"],
+        colors: [
+          "url(#hatch1)",
+          "#3E2C13",
+          "#C46737",
+          "#EFA327",
+          "#FEE292",
+          "transparent",
+        ],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 7, max: 10e6 - 1 },
-          { min: 1, max: 7 },
-          { min: 0, max: 1 },
+          { min: 2.5, max: 10e6 - 1 },
+          { min: 0.8, max: 2.5 },
+          { min: 0.2, max: 0.8 },
+          { min: 0, max: 0.2 },
           { min: -Infinity, max: 0 },
         ],
-        colors: ["url(#hatch1)", "#4B1216", "#961B1E", "#ED1C29", "#F0675E"],
+        colors: [
+          "url(#hatch1)",
+          "#4B1216",
+          "#961B1E",
+          "#ED1C29",
+          "#F0675E",
+          "transparent",
+        ],
       };
     } else if (selectedValues.raps == "offentlig_och_privat_sektor") {
       return {
@@ -182,7 +206,7 @@ export function getBoundariesAndColors() {
     }
 
     // Elanvandning
-  } else if (selectedValues.prognos == "elanvandning") {
+  } else if (selectedValues.prognos == "ead") {
     if (selectedValues.raps == "total") {
       return {
         boundaries: [

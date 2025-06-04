@@ -52,6 +52,21 @@ export function getStyleFunction() {
       boundariesAndColors.boundaries,
       boundariesAndColors.colors,
     );
+  } else if (selectedValues.prognos == "ebp") {
+    return createStyleFunctionEBP(
+      boundariesAndColors.boundaries,
+      boundariesAndColors.colors,
+    );
+  } else if (selectedValues.prognos == "ead") {
+    return createStyleFunctionEAD(
+      boundariesAndColors.boundaries,
+      boundariesAndColors.colors,
+    );
+  } else if (selectedValues.prognos == "eap") {
+    return createStyleFunctionEAP(
+      boundariesAndColors.boundaries,
+      boundariesAndColors.colors,
+    );
   } else {
     return getDefaultStyle();
   }
@@ -88,6 +103,93 @@ function createStyleFunctionEBD(boundaries, colors) {
     } else if (value > 10e6 - 1) {
       // let value2 = feature.properties ?? 0;
       let value2 = feature.properties.ebd;
+      let color2 = getColor(value2, boundaries, colors);
+      const patternId = `hatch-${value2}`;
+      createPattern(color2, patternId);
+      color = `url(#${patternId})`;
+    } else {
+      color = getColor(value, boundaries, colors);
+    }
+    return {
+      color: defaultColor,
+      opacity: defaultOpacity,
+      weight: defaultWeight,
+      fillColor: color,
+      fillOpacity: defaultFillOpacity,
+    };
+  };
+}
+
+function createStyleFunctionEBP(boundaries, colors) {
+  return function (feature) {
+    let value = feature.properties.ebp;
+    let color;
+
+    if (value < 0) {
+      const absValue = Math.abs(value);
+      const colorForDot = "transparent";
+      const patternId = `dotPattern-${absValue}`;
+      createDotPattern(colorForDot, patternId);
+    } else if (value > 10e6 - 1) {
+      let value2 = feature.properties.ebp;
+      let color2 = getColor(value2, boundaries, colors);
+      const patternId = `hatch-${value2}`;
+      createPattern(color2, patternId);
+      color = `url(#${patternId})`;
+    } else {
+      color = getColor(value, boundaries, colors);
+    }
+    return {
+      color: defaultColor,
+      opacity: defaultOpacity,
+      weight: defaultWeight,
+      fillColor: color,
+      fillOpacity: defaultFillOpacity,
+    };
+  };
+}
+
+function createStyleFunctionEAD(boundaries, colors) {
+  return function (feature) {
+    let value = feature.properties.ead;
+    let color;
+
+    if (value < 0) {
+      const absValue = Math.abs(value);
+      const colorForDot = "transparent";
+      const patternId = `dotPattern-${absValue}`;
+      createDotPattern(colorForDot, patternId);
+    } else if (value > 10e6 - 1) {
+      let value2 = feature.properties.ead;
+      let color2 = getColor(value2, boundaries, colors);
+      const patternId = `hatch-${value2}`;
+      createPattern(color2, patternId);
+      color = `url(#${patternId})`;
+    } else {
+      color = getColor(value, boundaries, colors);
+    }
+    return {
+      color: defaultColor,
+      opacity: defaultOpacity,
+      weight: defaultWeight,
+      fillColor: color,
+      fillOpacity: defaultFillOpacity,
+    };
+  };
+}
+
+function createStyleFunctionEAP(boundaries, colors) {
+  return function (feature) {
+    let value = feature.properties.eap;
+    let color;
+
+    if (value < 0) {
+      const absValue = Math.abs(value);
+      const colorForDot = "transparent";
+      const patternId = `dotPattern-${absValue}`;
+      createDotPattern(colorForDot, patternId);
+    } else if (value > 10e6 - 1) {
+      let value2 = feature.properties.eap;
       let color2 = getColor(value2, boundaries, colors);
       const patternId = `hatch-${value2}`;
       createPattern(color2, patternId);
