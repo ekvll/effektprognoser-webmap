@@ -29,8 +29,10 @@ export function loadDataLayer() {
   const dataPath = `assets/data/${selectedValues.region}/${selectedValues.year}_${selectedValues.raps}.geojson`;
   console.log(dataPath);
   let rapsValue;
+
+  // This is only used to be able to display the actual value on mouse-click on a square
   if (selectedValues.prognos === "effektbehov") {
-    rapsValue = "eb";
+    rapsValue = "eb"; // In the case of "effektbehov", the column is actually named "eb"
   } else {
     rapsValue = selectedValues.prognos;
   }

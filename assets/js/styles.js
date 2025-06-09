@@ -102,10 +102,12 @@ function createStyleFunctionEBD(boundaries, colors) {
       color = `url(#${patternId})`;
     } else if (value > 10e6 - 1) {
       // let value2 = feature.properties ?? 0;
+      const baseValue = feature.properties.eb;
+      const baseColor = getColor(baseValue, boundaries, colors);
       let value2 = feature.properties.ebd;
       let color2 = getColor(value2, boundaries, colors);
-      const patternId = `hatch-${value2}`;
-      createPattern(color2, patternId);
+      const patternId = `hatch-${baseColor}`;
+      createPattern(baseColor, patternId);
       color = `url(#${patternId})`;
     } else {
       color = getColor(value, boundaries, colors);
