@@ -289,7 +289,7 @@ export function getBoundariesAndColors() {
           { min: 0, max: 10e6 - 1 },
           { min: -500, max: 0 },
           { min: -1000, max: -500 },
-          { min: -2000, max: -1000 },
+          { min: -10e10, max: -1000 },
           //{ min: -Infinity, max: -2000 },
         ],
         // colors: [
@@ -386,11 +386,12 @@ export function getBoundariesAndColors() {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 350, max: 10e6 - 1 },
-          { min: 50, max: 350 },
-          { min: 20, max: 50 },
-          { min: 0, max: 20 },
-          { min: -Infinity, max: 0 },
+          { min: 0, max: 10e6 - 1 },
+          { min: -2, max: 0 },
+          //{ min: -20, max: -10 },
+          { min: -6, max: -2 },
+          { min: -10e10, max: -6 },
+          // { min: -Infinity, max: -30 },
         ],
         colors: [
           "url(#hatch1)",
@@ -398,7 +399,7 @@ export function getBoundariesAndColors() {
           "#C46737",
           "#EFA327",
           "#FEE292",
-          "transparent",
+          //"transparent",
         ],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {

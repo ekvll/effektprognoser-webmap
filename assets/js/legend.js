@@ -29,7 +29,6 @@ const svgCode = `
 export function updateLegend() {
   const legend = L.control({ position: "bottomright" });
 
-
   legend.onAdd = function (map) {
     const div = L.DomUtil.create("div", "legend");
     if (selectedValues.prognos === "effektbehov") {
@@ -49,7 +48,11 @@ export function updateLegend() {
     for (let i = 0; i < boundaries.length; i++) {
       // Dont display colors & boundaries devoted to 'Ny bebyggelse' (10e6 - 1)
       // and negative values
-      if (boundaries[i].min !== 10e6 - 1 && boundaries[i].min !== -Infinity) {
+      if (
+        boundaries[i].min !== 10e6 - 1 &&
+        boundaries[i].min !== -Infinity //&&
+        //boundaries[i].min !== -10e10
+      ) {
         if (boundaries[i].max === 10e6 - 1) {
           div.innerHTML += `
 <div style="display: flex; align-items: center; margin-bottom: 4px;">
@@ -58,15 +61,27 @@ export function updateLegend() {
 </div>
 `;
         } else {
-          div.innerHTML += `
+          if (boundaries[i].min !== -10e10) {
+            div.innerHTML += `
 <div style="display: flex; align-items: center; margin-bottom: 4px;">
 <div style="width: 20px; height: 20px; background: ${colors[i]}; margin-right: 8px; border: 1px solid #000;"></div> 
 <span>${boundaries[i].min} - ${boundaries[i].max}</span>
 </div>
 `;
+          } else {
+            div.innerHTML += `
+<div style="display: flex; align-items: center; margin-bottom: 4px;">
+<div style="width: 20px; height: 20px; background: ${colors[i]}; margin-right: 8px; border: 1px solid #000;"></div> 
+<span>< ${boundaries[i].max}</span>
+</div>
+`;
+          }
         }
         // Update the reference if negative values are present
-      } else if (boundaries[i].min === -Infinity) {
+      } else if (
+        boundaries[i].min === -Infinity ||
+        boundaries[i].min === -10e10
+      ) {
         negativeValues = true;
       }
     }
