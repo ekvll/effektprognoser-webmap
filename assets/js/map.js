@@ -88,7 +88,6 @@ function eventsToolBox() {
       selectedGranser.kommun = document.getElementById("kommungranser").checked;
       selectedGranser.natagare = document.getElementById("natagare").checked;
 
-      console.log(selectedGranser);
 
       loadKommunGranser();
       loadNatagareGranser();

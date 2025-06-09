@@ -28,11 +28,17 @@ export function loadDataLayer() {
   // The function is called to update the map with the new data layer based on the user's selections
   const dataPath = `assets/data/${selectedValues.region}/${selectedValues.year}_${selectedValues.raps}.geojson`;
   console.log(dataPath);
+  let rapsValue;
+  if (selectedValues.prognos === "effektbehov") {
+    rapsValue = "eb";
+  } else {
+    rapsValue = selectedValues.prognos;
+  }
 
   if (currentLayer) {
     map.removeLayer(currentLayer);
     currentLayer = null;
-    console.log("Layer removed");
+    // console.log("Layer removed");
   }
 
   const dataLayer = new L.GeoJSON.AJAX(dataPath, {
@@ -51,6 +57,10 @@ export function loadDataLayer() {
 				<tr>
 				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>ID:</strong></th>
 				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties.rid}</td>
+				</tr>
+				<tr>
+				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>Värde:</strong></th>
+				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties[rapsValue]}</td>
 				</tr>
 				</table>
 			`;
@@ -156,13 +166,13 @@ export function loadTileLayer() {
   const dataUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   if (layerCache[dataUrl]) {
     map.addLayer(layerCache[dataUrl]);
-    console.log("Cached tile layer added");
+    //console.log("Cached tile layer added");
   } else {
     tileLayer = L.tileLayer(dataUrl, {
       attribution: "© OpenStreetMap contributors",
     });
     tileLayer.addTo(map);
-    console.log("Tile layer added");
+    //console.log("Tile layer added");
     layerCache[dataUrl] = tileLayer;
   }
 }

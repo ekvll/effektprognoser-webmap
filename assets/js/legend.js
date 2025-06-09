@@ -29,7 +29,6 @@ const svgCode = `
 export function updateLegend() {
   const legend = L.control({ position: "bottomright" });
 
-  console.log(legend);
 
   legend.onAdd = function (map) {
     const div = L.DomUtil.create("div", "legend");

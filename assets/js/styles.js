@@ -28,7 +28,7 @@ function getColor(value, boundaries, colors) {
       return colors[i];
     }
   }
-  return "#ebebeb";
+  return "red";
 }
 
 export function getStyleFunction() {
@@ -130,6 +130,7 @@ function createStyleFunctionEBP(boundaries, colors) {
       const colorForDot = "transparent";
       const patternId = `dotPattern-${absValue}`;
       createDotPattern(colorForDot, patternId);
+      color = `url(#${patternId})`;
     } else if (value > 10e6 - 1) {
       let value2 = feature.properties.ebp;
       let color2 = getColor(value2, boundaries, colors);
@@ -153,20 +154,24 @@ function createStyleFunctionEAD(boundaries, colors) {
   return function (feature) {
     let value = feature.properties.ead;
     let color;
-
-    if (value < 0) {
-      const absValue = Math.abs(value);
-      const colorForDot = "transparent";
-      const patternId = `dotPattern-${absValue}`;
-      createDotPattern(colorForDot, patternId);
-    } else if (value > 10e6 - 1) {
-      let value2 = feature.properties.ead;
-      let color2 = getColor(value2, boundaries, colors);
-      const patternId = `hatch-${value2}`;
-      createPattern(color2, patternId);
-      color = `url(#${patternId})`;
-    } else {
+    if (selectedValues.raps === "bostader") {
       color = getColor(value, boundaries, colors);
+    } else {
+      if (value < 0) {
+        const absValue = Math.abs(value);
+        const colorForDot = "transparent";
+        const patternId = `dotPattern-${absValue}`;
+        createDotPattern(colorForDot, patternId);
+        color = `url(#${patternId})`;
+      } else if (value > 10e6 - 1) {
+        let value2 = feature.properties.ead;
+        let color2 = getColor(value2, boundaries, colors);
+        const patternId = `hatch-${value2}`;
+        createPattern(color2, patternId);
+        color = `url(#${patternId})`;
+      } else {
+        color = getColor(value, boundaries, colors);
+      }
     }
     return {
       color: defaultColor,
@@ -188,6 +193,7 @@ function createStyleFunctionEAP(boundaries, colors) {
       const colorForDot = "transparent";
       const patternId = `dotPattern-${absValue}`;
       createDotPattern(colorForDot, patternId);
+      color = `url(#${patternId})`;
     } else if (value > 10e6 - 1) {
       let value2 = feature.properties.eap;
       let color2 = getColor(value2, boundaries, colors);

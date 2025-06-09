@@ -53,7 +53,6 @@ function onZoomEnd() {
   addRemoveLayer(zoomLevel, roadsLayerBoundary, loadRoadsBoundary, 2, 1);
   addRemoveLayer(zoomLevel, roadsLayer, loadRoads, 2, 1);
 
-  console.log(zoomLevel);
 }
 
 export function adjustBackgroundLayersOnZoom() {
