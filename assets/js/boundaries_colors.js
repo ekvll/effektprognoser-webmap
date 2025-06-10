@@ -388,7 +388,6 @@ export function getBoundariesAndColors() {
           { min: 10e6 - 1, max: Infinity },
           { min: 0, max: 10e6 - 1 },
           { min: -2, max: 0 },
-          //{ min: -20, max: -10 },
           { min: -6, max: -2 },
           { min: -10e10, max: -6 },
           // { min: -Infinity, max: -30 },

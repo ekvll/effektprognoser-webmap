@@ -3,6 +3,7 @@ import { map, selectedValues } from "./map.js";
 import { getBoundariesAndColors } from "./boundaries_colors.js";
 
 let negativeValues = null;
+let belowZero;
 
 const svgDot = `
 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -32,15 +33,15 @@ export function updateLegend() {
   legend.onAdd = function (map) {
     const div = L.DomUtil.create("div", "legend");
     if (selectedValues.prognos === "effektbehov") {
-      div.innerHTML = "Effektbehov (MW)";
+      div.innerHTML = "<strong>Effektbehov (MW)</strong>";
     } else if (selectedValues.prognos === "ebd") {
-      div.innerHTML = "Tillkommande<br>effektbehov (MW)";
+      div.innerHTML = "<strong>Tillkommande<br>effektbehov (MW)</strong>";
     } else if (selectedValues.prognos === "ebp") {
-      div.innerHTML = "Tillkommande<br>effektbehov (%)";
+      div.innerHTML = "<strong>Tillkommande<br>effektbehov (%)</strong>";
     } else if (selectedValues.prognos === "ead") {
-      div.innerHTML = "Tillkommande<br>elanvändning (MWh)";
+      div.innerHTML = "<strong>Tillkommande<br>elanvändning (MWh)</strong>";
     } else if (selectedValues.prognos === "eap") {
-      div.innerHTML = "Tillkommande<br>elanvändning (%)";
+      div.innerHTML = "<strong>Tillkommande<br>elanvändning (%)</strong>";
     }
 
     const { boundaries, colors } = getBoundariesAndColors();
@@ -48,11 +49,7 @@ export function updateLegend() {
     for (let i = 0; i < boundaries.length; i++) {
       // Dont display colors & boundaries devoted to 'Ny bebyggelse' (10e6 - 1)
       // and negative values
-      if (
-        boundaries[i].min !== 10e6 - 1 &&
-        boundaries[i].min !== -Infinity //&&
-        //boundaries[i].min !== -10e10
-      ) {
+      if (boundaries[i].min !== 10e6 - 1 && boundaries[i].min !== -Infinity) {
         if (boundaries[i].max === 10e6 - 1) {
           div.innerHTML += `
 <div style="display: flex; align-items: center; margin-bottom: 4px;">
@@ -91,6 +88,7 @@ export function updateLegend() {
     if (negativeValues === true && selectedValues.prognos !== "effektbehov") {
       div.innerHTML += svgDot + "< 0";
       negativeValues = null;
+      belowZero = true;
     } else if (selectedValues.prognos === "effektbehov") {
       div.innerHTML += `
 <div style="display: flex; align-items: center; margin-bottom: 4px;">
@@ -101,10 +99,18 @@ export function updateLegend() {
     }
 
     if (selectedValues.prognos !== "effektbehov") {
-      if (selectedValues.raps === "transport") {
-        div.innerHTML += "<br>" + svgCode + "Ny laddinfra";
+      if (belowZero === true) {
+        if (selectedValues.raps === "transport") {
+          div.innerHTML += "<br>" + svgCode + "Ny laddinfra";
+        } else {
+          div.innerHTML += "<br>" + svgCode + "Ny bebyggelse";
+        }
       } else {
-        div.innerHTML += "<br>" + svgCode + "Ny bebyggelse";
+        if (selectedValues.raps === "transport") {
+          div.innerHTML += svgCode + "Ny laddinfra";
+        } else {
+          div.innerHTML += svgCode + "Ny bebyggelse";
+        }
       }
     }
 
