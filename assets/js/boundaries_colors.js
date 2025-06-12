@@ -89,11 +89,12 @@ export function getBoundariesAndColors() {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
           { min: 0, max: 10e6 - 1 },
-          { min: -0.2, max: 0 },
-          { min: -0.6, max: -0.2 },
-          { min: -10e10, max: -0.6 },
+          { min: -0.01, max: 0 },
+          { min: -0.1, max: -0.01 },
+          { min: -10e10, max: -0.1 },
         ],
-        colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        // colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        colors: ["url(#hatch1)", "#3E2C13", "#C46737", "#EFA327", "#FEE292"],
         // boundaries: [
         //   { min: 10e6 - 1, max: Infinity },
         //   { min: 2.5, max: 10e6 - 1 },
@@ -200,7 +201,8 @@ export function getBoundariesAndColors() {
           { min: -4, max: -2 },
           { min: -10e10, max: -4 },
         ],
-        colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        // colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        colors: ["url(#hatch1)", "#3E2C13", "#C46737", "#EFA327", "#FEE292"],
         // boundaries: [
         //   { min: 10e6 - 1, max: Infinity },
         //   { min: 350, max: 10e6 - 1 },
@@ -303,9 +305,9 @@ export function getBoundariesAndColors() {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
           { min: 0, max: 10e6 - 1 },
-          { min: -500, max: 0 },
-          { min: -1000, max: -500 },
-          { min: -10e10, max: -1000 },
+          { min: -25, max: 0 },
+          { min: -50, max: -25 },
+          { min: -10e10, max: -50 },
           //{ min: -Infinity, max: -2000 },
         ],
         // colors: [
@@ -316,7 +318,8 @@ export function getBoundariesAndColors() {
         //   "#FEE292",
         //   "transparent",
         // ],
-        colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        // colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        colors: ["url(#hatch1)", "#3E2C13", "#C46737", "#EFA327", "#FEE292"],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {
       return {
@@ -408,15 +411,8 @@ export function getBoundariesAndColors() {
           { min: -10e10, max: -6 },
           // { min: -Infinity, max: -30 },
         ],
-        colors: [
-          "url(#hatch1)",
-          "#FEE292",
-          "#EFA327",
-          "#C46737",
-          "#3E2C13",
-
-          //"transparent",
-        ],
+        // colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        colors: ["url(#hatch1)", "#3E2C13", "#C46737", "#EFA327", "#FEE292"],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {
       return {
