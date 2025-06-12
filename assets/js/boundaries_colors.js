@@ -88,20 +88,28 @@ export function getBoundariesAndColors() {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 2.5, max: 10e6 - 1 },
-          { min: 0.8, max: 2.5 },
-          { min: 0.2, max: 0.8 },
-          { min: 0, max: 0.2 },
-          { min: -Infinity, max: 0 },
+          { min: 0, max: 10e6 - 1 },
+          { min: -0.2, max: 0 },
+          { min: -0.6, max: -0.2 },
+          { min: -10e10, max: -0.6 },
         ],
-        colors: [
-          "url(#hatch1)",
-          "#3E2C13",
-          "#C46737",
-          "#EFA327",
-          "#FEE292",
-          "transparent",
-        ],
+        colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        // boundaries: [
+        //   { min: 10e6 - 1, max: Infinity },
+        //   { min: 2.5, max: 10e6 - 1 },
+        //   { min: 0.8, max: 2.5 },
+        //   { min: 0.2, max: 0.8 },
+        //   { min: 0, max: 0.2 },
+        //   { min: -Infinity, max: 0 },
+        // ],
+        // colors: [
+        //   "url(#hatch1)",
+        //   "#3E2C13",
+        //   "#C46737",
+        //   "#EFA327",
+        //   "#FEE292",
+        //   "transparent",
+        // ],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {
       return {
@@ -187,20 +195,28 @@ export function getBoundariesAndColors() {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 350, max: 10e6 - 1 },
-          { min: 50, max: 350 },
-          { min: 20, max: 50 },
-          { min: 0, max: 20 },
-          { min: -Infinity, max: 0 },
+          { min: 0, max: 10e6 - 1 },
+          { min: -2, max: 0 },
+          { min: -4, max: -2 },
+          { min: -10e10, max: -4 },
         ],
-        colors: [
-          "url(#hatch1)",
-          "#3E2C13",
-          "#C46737",
-          "#EFA327",
-          "#FEE292",
-          "transparent",
-        ],
+        colors: ["url(#hatch1)", "#FEE292", "#EFA327", "#C46737", "#3E2C13"],
+        // boundaries: [
+        //   { min: 10e6 - 1, max: Infinity },
+        //   { min: 350, max: 10e6 - 1 },
+        //   { min: 50, max: 350 },
+        //   { min: 20, max: 50 },
+        //   { min: 0, max: 20 },
+        //   { min: -Infinity, max: 0 },
+        // ],
+        // colors: [
+        //   "url(#hatch1)",
+        //   "#3E2C13",
+        //   "#C46737",
+        //   "#EFA327",
+        //   "#FEE292",
+        //   "transparent",
+        // ],
       };
     } else if (selectedValues.raps == "industri_och_bygg") {
       return {
@@ -394,10 +410,11 @@ export function getBoundariesAndColors() {
         ],
         colors: [
           "url(#hatch1)",
-          "#3E2C13",
-          "#C46737",
-          "#EFA327",
           "#FEE292",
+          "#EFA327",
+          "#C46737",
+          "#3E2C13",
+
           //"transparent",
         ],
       };

@@ -14,8 +14,8 @@ export function loadNatagareGranser() {
       style: function () {
         return {
           color: "#000",
-          weight: 1,
-          opacity: 0.5,
+          weight: 2,
+          opacity: 0.7,
           fillOpacity: 0,
           fillColor: "#000",
           dashArray: "5, 5",
@@ -56,11 +56,11 @@ export function loadKommunGranser() {
       style: function () {
         return {
           color: "#000",
-          weight: 1,
-          opacity: 0.5,
+          weight: 2,
+          opacity: 0.7,
           fillOpacity: 0,
           fillColor: "#000",
-          dashArray: "5, 5",
+          dashArray: "0",
           dashOffset: "0",
         };
       },

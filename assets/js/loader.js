@@ -7,9 +7,12 @@ let currentLayer;
 let danmarkLayer;
 let tileLayer;
 let citiesLayer;
+let citiesLayerHiRes;
 let lakesLayer;
 let roadsLayer;
 let roadsLayerBoundary;
+let roadsLayerHiRes;
+let roadsLayerBoundaryHiRes;
 let canvasRenderer = L.canvas();
 
 export function loadDataLayer() {
@@ -50,7 +53,7 @@ export function loadDataLayer() {
 				<table style="width:100%; border-collapse: collapse;">
 				<tr>
 				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>Nätbolag:</strong></th>
-				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties.natagare}</td>
+				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties.natbolag}</td>
 				</tr>
 				<tr>
 				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>Kommun:</strong></th>
@@ -134,6 +137,66 @@ export function loadRoads() {
   }
   if (map.hasLayer(roadsLayer)) {
     bringLayerToFrontWithTimer(roadsLayer, 1000, 3000);
+  }
+}
+export function loadRoadsBoundaryHiRes() {
+  const dataPath = `assets/data/background/vagar_3.geojson`;
+  const cacheKey = "roads_boundary";
+
+  if (layerCache[cacheKey]) {
+    roadsLayerBoundaryHiRes = layerCache[cacheKey];
+    map.addLayer(roadsLayerBoundaryHiRes);
+    console.log("Cached roads boundary layer added");
+  } else {
+    roadsLayerBoundaryHiRes = new L.GeoJSON.AJAX(dataPath, {
+      style: {
+        // Add styling
+        color: "#c3c3c3", // Line color
+        weight: 3, // Line thickness
+        opacity: 1, // Line opacity
+        fill: false,
+        //   fillColor: "#eeead7",
+        //   fillOpacity: 1,
+        interactive: false,
+        zIndex: 1000,
+      },
+    });
+    roadsLayerBoundaryHiRes.addTo(map);
+    console.log("Roads boundary layer added");
+    layerCache[cacheKey] = roadsLayerBoundaryHiRes;
+  }
+  if (map.hasLayer(roadsLayerBoundaryHiRes)) {
+    bringLayerToFrontWithTimer(roadsLayerBoundaryHiRes, 1000, 3000);
+  }
+}
+
+export function loadRoadsHiRes() {
+  const dataPath = `assets/data/background/vagar_3.geojson`;
+
+  if (layerCache[dataPath]) {
+    roadsLayerHiRes = layerCache[dataPath];
+    map.addLayer(roadsLayerHiRes);
+    console.log("Cached roads layer added");
+  } else {
+    roadsLayerHiRes = new L.GeoJSON.AJAX(dataPath, {
+      style: {
+        // Add styling
+        color: "#f5f5f5", // Line color
+        weight: 1.5, // Line thickness
+        opacity: 1, // Line opacity
+        fillColor: "#f5f5f5",
+        fillOpacity: 1,
+        interactive: false,
+        zIndex: 2000,
+      },
+    });
+
+    roadsLayerHiRes.addTo(map);
+    console.log("Roads layer added");
+    layerCache[dataPath] = roadsLayerHiRes;
+  }
+  if (map.hasLayer(roadsLayerHiRes)) {
+    bringLayerToFrontWithTimer(roadsLayerHiRes, 1000, 3000);
   }
 }
 
@@ -246,12 +309,61 @@ export function loadCities() {
   }
 }
 
+export function loadCitiesHiRes() {
+  // Function to load the city name labels layer
+  const dataPath = `assets/data/background/city_2.geojson`;
+
+  if (layerCache[dataPath]) {
+    // Check if the layer is already loaded, and stored in cache
+    // Use cached layer
+    map.addLayer(layerCache[dataPath]);
+    console.log("Cached cities layer added");
+  } else {
+    citiesLayerHiRes = new L.GeoJSON.AJAX(dataPath, {
+      renderer: canvasRenderer, // Render with canvas, instead of SVG
+      pointToLayer: function (feature, latlng) {
+        // Define a custom pointToLayer function
+        var marker = L.circleMarker(latlng, {
+          // Create a circle marker
+          radius: 0,
+          fillColor: "#000000",
+          color: "#000",
+          weight: 0,
+          opacity: 0,
+          fillOpacity: 0,
+          zIndex: 1000,
+        });
+
+        // Bind a tooltip or popup with the 'name' property from the GeoJSON feature
+        if (feature.properties && feature.properties.name) {
+          // Check if the 'name' property exists
+          marker
+            .bindTooltip(feature.properties.name, {
+              // Bind a tooltip with the 'name' property
+              permanent: true,
+              direction: "right",
+              className: "custom-tooltip", // Add your custom class, for CSS styling
+            })
+            .openTooltip();
+        }
+
+        return marker;
+      },
+    });
+    citiesLayerHiRes.addTo(map);
+    console.log("Cities layer added");
+    layerCache[dataPath] = citiesLayerHiRes; // Cache the layer
+  }
+}
 export {
   currentLayer,
   danmarkLayer,
   tileLayer,
   citiesLayer,
+  citiesLayerHiRes,
   lakesLayer,
   roadsLayer,
   roadsLayerBoundary,
+  roadsLayerHiRes,
+  roadsLayerBoundaryHiRes,
 };

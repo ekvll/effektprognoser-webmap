@@ -2,7 +2,7 @@ import { adjustBackgroundLayersOnZoom } from "./layers.js";
 import { loadDataLayer } from "./loader.js";
 import { loadNatagareGranser, loadKommunGranser } from "./load_granser.js";
 import { mapConfig } from "./config.js";
-import { updateLegend } from "./legend.js";
+import { updateLegend, updateLegend2 } from "./legend.js";
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
@@ -41,6 +41,14 @@ function initializeMap() {
 
   // const legendControl = createLegend();
   // legendControl.addTo(map);
+  // Add the RISE copyright
+  const customAttribution = L.control.attribution({
+    position: "bottomright",
+  });
+  customAttribution.setPrefix(
+    "© Region Skåne och RISE, Research Institutes of Sweden AB",
+  );
+  customAttribution.addTo(map);
 }
 
 function updateSelectedDataLayer() {
@@ -64,7 +72,7 @@ function updateSelectedDataLayer() {
     legendControl.remove();
   }
 
-  legendControl = updateLegend();
+  legendControl = updateLegend2();
   legendControl.addTo(map);
 }
 
@@ -87,7 +95,6 @@ function eventsToolBox() {
     cb.addEventListener("change", () => {
       selectedGranser.kommun = document.getElementById("kommungranser").checked;
       selectedGranser.natagare = document.getElementById("natagare").checked;
-
 
       loadKommunGranser();
       loadNatagareGranser();
