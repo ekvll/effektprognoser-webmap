@@ -63,10 +63,6 @@ export function loadDataLayer() {
 				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>ID:</strong></th>
 				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties.rid}</td>
 				</tr>
-				<tr>
-				<th style="text-align:left; padding: 0px; border-bottom: 1px solid #ddd;"><strong>Värde:</strong></th>
-				<td style="padding: 8px; border-bottom: 1px solid #ddd;">${feature.properties[rapsValue]}</td>
-				</tr>
 				</table>
 			`;
       layer.on("click", function (e) {
@@ -86,6 +82,7 @@ export function loadRoadsBoundary() {
   if (layerCache[cacheKey]) {
     roadsLayerBoundary = layerCache[cacheKey];
     map.addLayer(roadsLayerBoundary);
+    bringLayerToFrontWithTimer(roadsLayerBoundary, 1000, 3000);
     console.log("Cached roads boundary layer added");
   } else {
     roadsLayerBoundary = new L.GeoJSON.AJAX(dataPath, {
@@ -116,6 +113,7 @@ export function loadRoads() {
   if (layerCache[dataPath]) {
     roadsLayer = layerCache[dataPath];
     map.addLayer(roadsLayer);
+    bringLayerToFrontWithTimer(roadsLayer, 1000, 3000);
     console.log("Cached roads layer added");
   } else {
     roadsLayer = new L.GeoJSON.AJAX(dataPath, {
@@ -146,6 +144,7 @@ export function loadRoadsBoundaryHiRes() {
   if (layerCache[cacheKey]) {
     roadsLayerBoundaryHiRes = layerCache[cacheKey];
     map.addLayer(roadsLayerBoundaryHiRes);
+    bringLayerToFrontWithTimer(roadsLayerBoundaryHiRes, 1000, 3000);
     console.log("Cached roads boundary layer added");
   } else {
     roadsLayerBoundaryHiRes = new L.GeoJSON.AJAX(dataPath, {
@@ -176,6 +175,7 @@ export function loadRoadsHiRes() {
   if (layerCache[dataPath]) {
     roadsLayerHiRes = layerCache[dataPath];
     map.addLayer(roadsLayerHiRes);
+    bringLayerToFrontWithTimer(roadsLayerHiRes, 1000, 3000);
     console.log("Cached roads layer added");
   } else {
     roadsLayerHiRes = new L.GeoJSON.AJAX(dataPath, {
@@ -205,6 +205,7 @@ export function loadLakes() {
   if (layerCache[dataPath]) {
     lakesLayer = layerCache[dataPath];
     map.addLayer(lakesLayer);
+    bringLayerToFrontWithTimer(lakesLayer, 1000, 3000);
     console.log("Cached lakes layer added");
   } else {
     lakesLayer = new L.GeoJSON.AJAX("assets/data/background/sjoar_1.geojson", {

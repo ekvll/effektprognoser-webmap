@@ -1,8 +1,12 @@
-import { adjustBackgroundLayersOnZoom } from "./layers.js";
+import {
+  adjustBackgroundLayersOnZoom,
+  onZoomEnd,
+  bringLayersToFront,
+} from "./layers.js";
 import { loadDataLayer } from "./loader.js";
 import { loadNatagareGranser, loadKommunGranser } from "./load_granser.js";
 import { mapConfig } from "./config.js";
-import { updateLegend, updateLegend2 } from "./legend.js";
+import { updateLegend2 } from "./legend.js"; // updateLegend is deprecated
 
 // This module initializes a Leaflet map and sets up event listeners for a toolbox with radio buttons.
 let map;
@@ -87,7 +91,10 @@ function eventsToolBox() {
 
   // Listen for changes on all radio buttons
   document.querySelectorAll('input[type="radio"]').forEach((item) => {
-    item.addEventListener("change", updateSelectedDataLayer);
+    item.addEventListener("change", () => {
+      updateSelectedDataLayer();
+      bringLayersToFront();
+    });
   });
 
   // Listen for changes on the checkboxes for granser

@@ -21,33 +21,25 @@ import {
   roadsLayerBoundaryHiRes,
   lakesLayer,
 } from "./loader.js";
+import { bringLayerToFrontWithTimer } from "./utils.js";
 
-function addRemoveLayer_bk(zoomLevel, layer, addFunc, th, reverse) {
-  if (reverse === 0) {
-    if (zoomLevel >= zoomThresholds[th]) {
-      if (!map.hasLayer(layer)) {
-        addFunc();
-      }
-    } else if (zoomLevel < zoomThresholds[th]) {
-      if (map.hasLayer(layer)) {
-        map.removeLayer(layer);
-      }
-    }
-  } else {
-    if (zoomLevel < zoomThresholds[th]) {
-      if (!map.hasLayer(layer)) {
-        addFunc();
-      }
-    } else if (zoomLevel >= zoomThresholds[th]) {
-      if (map.hasLayer(layer)) {
-        map.removeLayer(layer);
-      }
+export function bringLayersToFront() {
+  const layers = [
+    roadsLayerBoundary,
+    roadsLayer,
+    roadsLayerBoundaryHiRes,
+    roadsLayerHiRes,
+    lakesLayer,
+  ];
+  for (let i = 0; i < layers.length; i++) {
+    let layer = layers[i];
+    if (map.hasLayer(layer)) {
+      bringLayerToFrontWithTimer(layer, 500, 2000);
     }
   }
 }
-function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
-  console.log(Object.keys(zoomThresholds).length);
 
+function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
   let highTh;
 
   if (th + 1 <= Object.keys(zoomThresholds).length) {
@@ -105,7 +97,7 @@ function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
   }
 }
 
-function onZoomEnd() {
+export function onZoomEnd() {
   // This function adjusts the visibility (add/remove) of layers based on the current zoom level
   // The higher the zoom level the more zoomed in you are
   // Zoom level equal to 12 is more zoomed in than zoom level equal to 10
@@ -122,8 +114,8 @@ function onZoomEnd() {
   addRemoveLayer(zoomLevel, roadsLayerHiRes, loadRoadsHiRes, 2, 0);
   addRemoveLayer(zoomLevel, citiesLayer, loadCities, 2, 1);
   addRemoveLayer(zoomLevel, citiesLayerHiRes, loadCitiesHiRes, 2, 0);
-  addRemoveLayer(zoomLevel, lakesLayer, loadLakes, 2, 1);
-  addRemoveLayer(zoomLevel, danmarkLayer, loadDanmark, 2, 1);
+  addRemoveLayer(zoomLevel, lakesLayer, loadLakes, 3, 1);
+  addRemoveLayer(zoomLevel, danmarkLayer, loadDanmark, 3, 1);
   addRemoveLayer(zoomLevel, roadsLayerBoundary, loadRoadsBoundary, 2, 1);
   addRemoveLayer(zoomLevel, roadsLayer, loadRoads, 2, 1);
 }
