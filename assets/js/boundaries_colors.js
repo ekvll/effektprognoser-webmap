@@ -54,10 +54,10 @@ export function getBoundariesAndColors() {
       return {
         boundaries: [
           { min: 10e6 - 1, max: Infinity },
-          { min: 15, max: 10e6 - 1 },
-          { min: 5, max: 15 },
-          { min: 1, max: 5 },
-          { min: -Infinity, max: 1 },
+          { min: 10, max: 10e6 - 1 },
+          { min: 5, max: 10 },
+          { min: 0.5, max: 5 },
+          { min: -Infinity, max: 0.5 },
         ],
         colors: ["url(#hatch1)", "#091C1D", "#155384", "#068AB6", "#7BACAE"],
       };
@@ -158,7 +158,7 @@ export function getBoundariesAndColors() {
           { min: 0.8, max: 2.5 },
           { min: 0.2, max: 0.8 },
           { min: 0, max: 0.2 },
-          { min: -Infinity, max: 0 },
+          // { min: -Infinity, max: 0 },
         ],
         colors: [
           "url(#hatch1)",
@@ -166,7 +166,7 @@ export function getBoundariesAndColors() {
           "#155384",
           "#068AB6",
           "#7BACAE",
-          "transparent",
+          // "transparent",
         ],
       };
     }
@@ -266,7 +266,7 @@ export function getBoundariesAndColors() {
           { min: 800, max: 1600 },
           { min: 200, max: 800 },
           { min: 0, max: 200 },
-          { min: -Infinity, max: 0 },
+          // { min: -Infinity, max: 0 },
         ],
         colors: [
           "url(#hatch1)",
@@ -274,7 +274,7 @@ export function getBoundariesAndColors() {
           "#155384",
           "#068AB6",
           "#7BACAE",
-          "transparent",
+          // "transparent",
         ],
       };
     }
@@ -367,7 +367,7 @@ export function getBoundariesAndColors() {
           { min: 1000, max: 10000 },
           { min: 50, max: 1000 },
           { min: 0, max: 50 },
-          { min: -Infinity, max: 0 },
+          // { min: -Infinity, max: 0 },
         ],
         colors: [
           "url(#hatch1)",
@@ -375,7 +375,7 @@ export function getBoundariesAndColors() {
           "#155384",
           "#068AB6",
           "#7BACAE",
-          "transparent",
+          // "transparent",
         ],
       };
     }
@@ -460,7 +460,7 @@ export function getBoundariesAndColors() {
           { min: 800, max: 1600 },
           { min: 200, max: 800 },
           { min: 0, max: 200 },
-          { min: -Infinity, max: 0 },
+          // { min: -Infinity, max: 0 },
         ],
         colors: [
           "url(#hatch1)",
@@ -468,7 +468,7 @@ export function getBoundariesAndColors() {
           "#155384",
           "#068AB6",
           "#7BACAE",
-          "transparent",
+          // "transparent",
         ],
       };
     }

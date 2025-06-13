@@ -40,33 +40,18 @@ export function getStyleFunction() {
   // The function is used to style the features in the GeoJSON layer based on the selected prognos and raps values
   // The function returns a style function that can be used by Leaflet to style the features in the GeoJSON layer
   // The function is called to get the style function based on the current selections
-  let boundariesAndColors = getBoundariesAndColors();
+  let { boundaries, colors } = getBoundariesAndColors();
 
   if (selectedValues.prognos == "effektbehov") {
-    return createStyleFunctionEB(
-      boundariesAndColors.boundaries,
-      boundariesAndColors.colors,
-    );
+    return createStyleFunctionEB(boundaries, colors);
   } else if (selectedValues.prognos == "ebd") {
-    return createStyleFunctionEBD(
-      boundariesAndColors.boundaries,
-      boundariesAndColors.colors,
-    );
+    return styleFunctionDifference(boundaries, colors, "ebd", "eb");
   } else if (selectedValues.prognos == "ebp") {
-    return createStyleFunctionEBP(
-      boundariesAndColors.boundaries,
-      boundariesAndColors.colors,
-    );
+    return styleFunctionPercentage(boundaries, colors, "ebp");
   } else if (selectedValues.prognos == "ead") {
-    return createStyleFunctionEAD(
-      boundariesAndColors.boundaries,
-      boundariesAndColors.colors,
-    );
+    return styleFunctionDifference(boundaries, colors, "ead", "ea");
   } else if (selectedValues.prognos == "eap") {
-    return createStyleFunctionEAP(
-      boundariesAndColors.boundaries,
-      boundariesAndColors.colors,
-    );
+    return styleFunctionPercentage(boundaries, colors, "eap");
   } else {
     return getDefaultStyle();
   }
@@ -89,46 +74,25 @@ function createStyleFunctionEB(boundaries, colors) {
   };
 }
 
-function createStyleFunctionEBD(boundaries, colors) {
+function styleFunctionPercentage(boundaries, colors, prognos) {
+  // Code...
   return function (feature) {
-    let value = feature.properties.ebd;
+    let value = feature.properties[prognos];
     let color;
-    if (value < 0 && selectedValues.raps !== "bostader") {
+
+    if (
+      value < 0 &&
+      selectedValues.raps !== "bostader" &&
+      selectedValues.raps !== "transport"
+    ) {
       const absValue = Math.abs(value);
       const colorForDot = "transparent";
       const patternId = `dotPattern-${colorForDot}`;
       createDotPattern(colorForDot, patternId);
       color = `url(#${patternId})`;
-    } else if (value > 10e6 - 1) {
-      const baseValue = feature.properties.eb;
-      const baseColor = getColor(baseValue, boundaries, colors);
-      const patternId = `hatch-${baseColor}`;
-      createPattern(baseColor, patternId);
-      color = `url(#${patternId})`;
-    } else {
-      color = getColor(value, boundaries, colors);
-    }
-    return {
-      color: defaultColor,
-      opacity: defaultOpacity,
-      weight: defaultWeight,
-      fillColor: color,
-      fillOpacity: defaultFillOpacity,
-    };
-  };
-}
-
-function createStyleFunctionEBP(boundaries, colors) {
-  return function (feature) {
-    let value = feature.properties.ebp;
-    let color;
-
-    if (value < 0 && selectedValues.raps !== "bostader") {
-      const absValue = Math.abs(value);
-      const colorForDot = "transparent";
-      const patternId = `dotPattern-${colorForDot}`;
-      createDotPattern(colorForDot, patternId);
-      color = `url(#${patternId})`;
+    } else if (value < 0 && selectedValues.raps === "transport") {
+      const positiveValue = 0.1;
+      color = getColor(positiveValue, boundaries, colors);
     } else if (value > 10e6 - 1) {
       const baseColor = "transparent";
       const patternId = `hatch-${baseColor}`;
@@ -148,18 +112,26 @@ function createStyleFunctionEBP(boundaries, colors) {
   };
 }
 
-function createStyleFunctionEAD(boundaries, colors) {
+function styleFunctionDifference(boundaries, colors, prognos, base) {
+  // Code...
   return function (feature) {
-    let value = feature.properties.ead;
+    let value = feature.properties[prognos];
     let color;
-    if (value < 0 && selectedValues.raps !== "bostader") {
+    if (
+      value < 0 &&
+      selectedValues.raps !== "bostader" &&
+      selectedValues.raps !== "transport"
+    ) {
       const absValue = Math.abs(value);
       const colorForDot = "transparent";
       const patternId = `dotPattern-${colorForDot}`;
       createDotPattern(colorForDot, patternId);
       color = `url(#${patternId})`;
+    } else if (value < 0 && selectedValues.raps === "transport") {
+      const positiveValue = 0.1;
+      color = getColor(positiveValue, boundaries, colors);
     } else if (value > 10e6 - 1) {
-      const baseValue = feature.properties.ea;
+      const baseValue = feature.properties[base];
       const baseColor = getColor(baseValue, boundaries, colors);
       const patternId = `hatch-${baseColor}`;
       createPattern(baseColor, patternId);
@@ -167,36 +139,6 @@ function createStyleFunctionEAD(boundaries, colors) {
     } else {
       color = getColor(value, boundaries, colors);
     }
-    return {
-      color: defaultColor,
-      opacity: defaultOpacity,
-      weight: defaultWeight,
-      fillColor: color,
-      fillOpacity: defaultFillOpacity,
-    };
-  };
-}
-
-function createStyleFunctionEAP(boundaries, colors) {
-  return function (feature) {
-    let value = feature.properties.eap;
-    let color;
-
-    if (value < 0 && selectedValues.raps !== "bostader") {
-      const absValue = Math.abs(value);
-      const colorForDot = "transparent";
-      const patternId = `dotPattern-${colorForDot}`;
-      createDotPattern(colorForDot, patternId);
-      color = `url(#${patternId})`;
-    } else if (value > 10e6 - 1) {
-      const baseColor = "transparent";
-      const patternId = `hatch-${baseColor}`;
-      createPattern(baseColor, patternId);
-      color = `url(#${patternId})`;
-    } else {
-      color = getColor(value, boundaries, colors);
-    }
-
     return {
       color: defaultColor,
       opacity: defaultOpacity,

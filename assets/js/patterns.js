@@ -27,7 +27,7 @@ export function createDotPattern(color, id) {
   const circle = document.createElementNS(svgNS, "circle");
   circle.setAttribute("cx", "3");
   circle.setAttribute("cy", "3");
-  circle.setAttribute("r", "0.75");
+  circle.setAttribute("r", "1.05");
   circle.setAttribute("fill", "black");
 
   pattern.appendChild(rect);
@@ -70,7 +70,7 @@ export function createPattern(color, id) {
 
   const path = document.createElementNS(svgNS, "path");
   path.setAttribute("d", "M0,0 L10,10");
-  path.setAttribute("style", "stroke:black; stroke-width:0.25");
+  path.setAttribute("style", "stroke:black; stroke-width:0.75");
 
   pattern.appendChild(rect);
   pattern.appendChild(path);
