@@ -4,6 +4,8 @@ export function getBoundariesAndColors() {
   // This function returns the boundaries and colors based on the selected prognos and raps values
   // It checks the selected prognos and raps values to determine which boundaries and colors to return
   // If the prognos is "effektbehov", it returns specific boundaries and colors based on the selected raps value
+  //
+  //  This function is also responsible for what colors and boundaries that are shown in the legend
 
   if (selectedValues.prognos == "effektbehov") {
     if (selectedValues.raps == "total") {

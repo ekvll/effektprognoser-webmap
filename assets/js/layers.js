@@ -40,6 +40,12 @@ export function bringLayersToFront() {
 }
 
 function addRemoveLayer(zoomLevel, layer, addFunc, th, reverse) {
+  // Add or remove a layer from the map depending on current zoom level,
+  // zoom threshold and wether the function should be used in a reverse manner
+  //
+  // This docstring needs improvements!
+
+  // Define thw upper and lower thresholds
   let highTh;
 
   if (th + 1 <= Object.keys(zoomThresholds).length) {
