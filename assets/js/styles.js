@@ -122,14 +122,17 @@ function styleFunctionDifference(boundaries, colors, prognos, base) {
       selectedValues.raps !== "bostader" &&
       selectedValues.raps !== "transport"
     ) {
+      // Negative values are marked with dots
       const absValue = Math.abs(value);
       const colorForDot = "transparent";
       const patternId = `dotPattern-${colorForDot}`;
       createDotPattern(colorForDot, patternId);
       color = `url(#${patternId})`;
+      // Negative values in 'transport' are neglected
     } else if (value < 0 && selectedValues.raps === "transport") {
       const positiveValue = 0.1;
       color = getColor(positiveValue, boundaries, colors);
+      // 10e6 is a dummy value for squares with 'ny bebyggelse' or 'ny laddinfra'
     } else if (value > 10e6 - 1) {
       const baseValue = feature.properties[base];
       const baseColor = getColor(baseValue, boundaries, colors);

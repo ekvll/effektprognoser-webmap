@@ -79,6 +79,7 @@ export function loadRoadsBoundary() {
   const dataPath = `assets/data/background/vagar_2.geojson`;
   const cacheKey = "roads_boundary";
 
+  // If layer is cached already, add the cached layer to map
   if (layerCache[cacheKey]) {
     roadsLayerBoundary = layerCache[cacheKey];
     map.addLayer(roadsLayerBoundary);
@@ -100,6 +101,7 @@ export function loadRoadsBoundary() {
     });
     roadsLayerBoundary.addTo(map);
     console.log("Roads boundary layer added");
+    // Add the newly loaded layer to cache
     layerCache[cacheKey] = roadsLayerBoundary;
   }
   if (map.hasLayer(roadsLayerBoundary)) {
